@@ -1,0 +1,24 @@
+load --init ../spl/Stage-22/shell-II.xsm
+load --int=console ../spl/Stage-22/console_inter.xsm
+load --int=6 ../spl/Stage-22/inter_6.xsm
+load --module 7  ../spl/Stage-22/boot_module.xsm
+load --idle ../spl/Stage-15/idle.xsm
+load --library ../expl/library.lib
+load --int=7 ../spl/Stage-22/int_7.xsm
+load --module 4 ../spl/Stage-22/mod_4.xsm
+load --module 0 ../spl/Stage-22/mod_0.xsm
+load --int=10 ../spl/Stage-22/int_10.xsm
+load --int=timer ../spl/Stage-22/timer.xsm
+load --exhandler ../spl/Stage-22/exhandler.xsm
+load --os ../spl/Stage-22/os_start.xsm
+load --module 5 ../spl/Stage-22/scheduler_module.xsm
+load --int=9  ../spl/Stage-22/int_9.xsm
+load --module 1  ../spl/Stage-22/process_manager.xsm
+load --module 2  ../spl/Stage-22/memory_manager.xsm
+load --int=disk ../spl/Stage-22/disk_inter.xsm
+load --exec ../spl/Stage-22/ass3_1.xsm
+load --int=8 ../spl/Stage-22/int_8.xsm
+load --int=11 ../spl/Stage-22/int_11.xsm
+load --int=15 ../spl/Stage-22/int_15.xsm
+load --int=13 ../spl/Stage-22/int_13.xsm
+load --int=14 ../spl/Stage-22/int_14.xsm

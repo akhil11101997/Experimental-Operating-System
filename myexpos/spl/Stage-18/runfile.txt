@@ -1,0 +1,21 @@
+load --init ../spl/Stage-17/shellst17.xsm
+load --int=console ../spl/Stage-16/console_inter.xsm
+load --int=6 ../spl/Stage-16/inter_6.xsm
+load --module 7  ../spl/Stage-16/boot_st_16.xsm
+load --idle ../spl/Stage-15/idle.xsm
+load --library ../expl/library.lib
+load --int=7 ../spl/Stage-15/int_7_stage_15.xsm
+load --module 4 ../spl/Stage-18/mod_4_st_16.xsm
+load --module 0 ../spl/Stage-18/mod_0_st_15.xsm
+load --int=10 ../spl/Stage-15/init-10_stage_14.xsm
+load --int=timer ../spl/Stage-15/timer_stage_14.xsm
+load --exhandler ../spl/Stage-15/haltprog.xsm
+load --module 5 ../spl/Stage-15/mod_5.xsm
+load --os ../spl/Stage-15/os_start_new.xsm
+load --module 5 ../spl/Stage-16/scheduler_module.xsm
+load --module 7  ../spl/Stage-18/boot_st_17.xsm
+load --int=9  ../spl/Stage-18/exec_intr_9.xsm
+load --module 1  ../spl/Stage-17/mod1.xsm
+load --module 2  ../spl/Stage-17/mod2.xsm
+load --exec ../expl/expl_progs/odd.xsm
+load --int=disk ../spl/Stage-18/disk_interr.xsm

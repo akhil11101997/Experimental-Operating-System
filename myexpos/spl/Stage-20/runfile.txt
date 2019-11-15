@@ -1,0 +1,21 @@
+load --init ../spl/Stage-20/assgn_1_init.xsm
+load --int=console ../spl/Stage-16/console_inter.xsm
+load --int=6 ../spl/Stage-16/inter_6.xsm
+load --module 7  ../spl/Stage-20/boot_module.xsm
+load --idle ../spl/Stage-15/idle.xsm
+load --library ../expl/library.lib
+load --int=7 ../spl/Stage-15/int_7_stage_15.xsm
+load --module 4 ../spl/Stage-18/mod_4_st_16.xsm
+load --module 0 ../spl/Stage-18/mod_0_st_15.xsm
+load --int=10 ../spl/Stage-20/int-10.xsm
+load --int=timer ../spl/Stage-20/timer_stage_14.xsm
+load --exhandler ../spl/Stage-19/exhandler.xsm
+load --os ../spl/Stage-15/os_start_new.xsm
+load --module 5 ../spl/Stage-20/scheduler_module.xsm
+load --int=9  ../spl/Stage-19/int_9_routine.xsm
+load --module 1  ../spl/Stage-20/process_manager.xsm
+load --module 2  ../spl/Stage-19/memory_manager.xsm
+load --int=disk ../spl/Stage-18/disk_interr.xsm
+load --exec ../spl/Stage-20/even.xsm
+load --exec ../spl/Stage-20/odd.xsm
+load --int=8 ../spl/Stage-20/int_8.xsm

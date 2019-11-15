@@ -1,0 +1,88 @@
+[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16 ) + 13] = SP;
+alias userSP R1;
+userSP = SP;
+SP = [PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16 ) + 11] * 512 - 1; 
+
+//Argument
+alias PhysicalPageNum R2;
+alias offset R3;
+alias funNum R4;
+PhysicalPageNum = [PTBR + 2 *((userSP - 5)/512)];
+offset = (userSP - 5) % 512;
+funNum = [(PhysicalPageNum * 512) + offset];
+
+//Semlock
+if(funNum == 19) then
+	[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16) + 9] = 19;
+	
+	alias perpt R6;
+ 	alias semid R7;
+ 	
+ 	semid = [[PTBR + 2 *((userSP - 4)/512)] * 512 + ((userSP - 4)%512)];
+ 	perpt = ([PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16) + 11]) * 512 + (512 - 16);
+ 	
+ 	if(semid >= 0 && semid < 8 && [perpt + semid] == 1) then
+ 		while([SEMAPHORE_TABLE + 4*[perpt+semid+1]] != [SYSTEM_STATUS_TABLE + 1] && [SEMAPHORE_TABLE + 4*[perpt+semid+1]] != -1) do
+ 			print [SYSTEM_STATUS_TABLE + 1];
+ 			print "LOCKS";
+ 			print semid;
+ 			[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16) + 4] = WAIT_SEMAPHORE;
+			[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16) + 5] = semid;
+			multipush(R1,R2,R3,R4,R5,R6,R7);
+			call MOD_5;
+			multipop(R1,R2,R3,R4,R5,R6,R7);
+ 		endwhile;
+ 		
+ 		[SEMAPHORE_TABLE + 4 * [perpt + semid + 1]] = [SYSTEM_STATUS_TABLE + 1];
+		R0 = 0;
+	else
+		R0 =-1;
+	endif;
+	
+ 	[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16 ) + 9] = 0;
+ 	[[PTBR + 2 *((userSP - 1)/512)] * 512 + ((userSP - 1)%512)] = R0;
+ 	SP =  [PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16 ) + 13];
+ 	ireturn;
+endif;
+
+if(funNum == 20) then
+	
+	[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16) + 9] = 19;
+	
+	alias perpt R6;
+ 	alias semid R7;
+ 	
+ 	semid = [[PTBR + 2 *((userSP - 4)/512)] * 512 + ((userSP - 4)%512)];
+ 	perpt = ([PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16) + 11]) * 512 + (512 - 16);
+ 	
+ 	if (semid >= 0 && semid < 8 && [perpt + semid] == 1) then
+		if ([SEMAPHORE_TABLE + 4 * [perpt + semid + 1]] != -1) then
+			if ([SEMAPHORE_TABLE + 4 * [perpt + semid + 1]] != [SYSTEM_STATUS_TABLE + 1]) then
+				R0 = -2;
+			else
+				[SEMAPHORE_TABLE + 4 * [perpt + semid + 1]] = -1;
+				print [SYSTEM_STATUS_TABLE + 1];
+ 				print "UNLOCKS";
+ 				print semid;
+				alias counter R8;
+				counter = 1;
+				while(([PROCESS_TABLE + ((counter%16)*16)+4] != WAIT_SEMAPHORE)  && (counter < 32) && (([PROCESS_TABLE + ((counter%16)*16)+5] != semid) || ([PROCESS_TABLE + ((counter%16)*16)+4] != WAIT_SEMAPHORE) ) ) do
+					counter = counter +1;
+				endwhile;
+				if([PROCESS_TABLE + ((counter%16)*16)+5] == semid && [PROCESS_TABLE + ((counter%16)*16)+4] == WAIT_SEMAPHORE) then
+					print (counter%16);
+					print READY;
+					[PROCESS_TABLE + ((counter%16) * 16) + 4] = READY;
+					[PROCESS_TABLE + ((counter%16) * 16) + 5] = 0;
+				endif;
+				R0 = 0;
+			endif;
+		endif;
+	else
+		R0 = -1;
+	endif;
+	[PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16 ) + 9] = 0;
+ 	[[PTBR + 2 *((userSP - 1)/512)] * 512 + ((userSP - 1)%512)] = R0;
+ 	SP =  [PROCESS_TABLE + ([SYSTEM_STATUS_TABLE + 1] * 16 ) + 13];
+ 	ireturn;
+endif;
